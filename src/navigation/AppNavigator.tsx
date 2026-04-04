@@ -14,6 +14,7 @@ import EscrowScreen from '../screens/EscrowScreen';
 import PendingTransactionsScreen from '../screens/PendingTransactionsScreen';
 import BulkSendScreen from '../screens/BulkSendScreen';
 import InvoiceScreen from '../screens/InvoiceScreen';
+import BillsScreen from '../screens/BillsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -54,6 +55,7 @@ export default function AppNavigator() {
         <Stack.Screen name="PendingTransactions" component={PendingTransactionsScreen} />
         <Stack.Screen name="BulkSend" component={BulkSendScreen} />
         <Stack.Screen name="Invoice" component={InvoiceScreen} />
+        <Stack.Screen name="Bills" component={BillsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
