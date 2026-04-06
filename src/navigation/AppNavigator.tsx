@@ -36,6 +36,7 @@ import GiftCardsScreen from '../screens/GiftCardsScreen';
 import CalendarViewScreen from '../screens/CalendarViewScreen';
 import NFCPaymentsScreen from '../screens/NFCPaymentsScreen';
 import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
+import TransactionCategoriesScreen from '../screens/TransactionCategoriesScreen';
 import { useApp } from '../contexts/AppContext';
 import { colors } from '../theme/theme';
 
@@ -137,6 +138,7 @@ export default function AppNavigator() {
         <Stack.Screen name="CalendarView" component={CalendarViewScreen} />
         <Stack.Screen name="NFCPayments" component={NFCPaymentsScreen} />
         <Stack.Screen name="ExchangeRates" component={ExchangeRatesScreen} />
+        <Stack.Screen name="TransactionCategories" component={TransactionCategoriesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
