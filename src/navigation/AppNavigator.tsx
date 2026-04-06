@@ -28,6 +28,7 @@ import InvoiceScreen from '../screens/InvoiceScreen';
 import BillsScreen from '../screens/BillsScreen';
 import StreamingPaymentsScreen from '../screens/StreamingPaymentsScreen';
 import RecurringPaymentsScreen from '../screens/RecurringPaymentsScreen';
+import SplitBillScreen from '../screens/SplitBillScreen';
 import { useApp } from '../contexts/AppContext';
 import { colors } from '../theme/theme';
 
@@ -110,6 +111,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Bills" component={BillsScreen} />
         <Stack.Screen name="StreamingPayments" component={StreamingPaymentsScreen} />
         <Stack.Screen name="RecurringPayments" component={RecurringPaymentsScreen} />
+        <Stack.Screen name="SplitBill" component={SplitBillScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Contacts" component={ContactsScreen} />
         <Stack.Screen name="Security" component={SecurityScreen} />
