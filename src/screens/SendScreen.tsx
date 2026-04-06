@@ -53,6 +53,7 @@ export default function SendScreen({ navigation, route }: any) {
   const [tokenBalance, setTokenBalance] = useState<string>('0');
   const [recentRecipients, setRecentRecipients] = useState<any[]>([]);
   const [showRecentContacts, setShowRecentContacts] = useState(false);
+  const [recipientIsEmail, setRecipientIsEmail] = useState(false);
 
   const presets = ['5', '10', '25', '50', '100', '250'];
 
@@ -119,11 +120,24 @@ export default function SendScreen({ navigation, route }: any) {
       return;
     }
 
+    setRecipientIsEmail(isEmail);
+
+    Alert.alert(
+      'Confirm Transaction',
+      `You are about to send ${amount} ${selectedToken.symbol} to ${recipient.slice(0, 8)}...\n\nNetwork: ${selectedNetwork.name}\n${memo ? `Memo: ${memo}` : ''}`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Confirm', onPress: () => executeSend() },
+      ]
+    );
+  };
+
+  const executeSend = async () => {
     setLoading(true);
     try {
       const amountUSDC = BigInt(Math.floor(parseFloat(amount) * 1e6));
       
-      if (selectedToken.symbol === 'USDC' && !isEmail) {
+      if (selectedToken.symbol === 'USDC' && !recipientIsEmail) {
         try {
           const allowance = await checkUSDCAllowance(selectedNetwork.id, walletAddress);
           console.log('USDC allowance:', allowance.toString());
@@ -149,7 +163,7 @@ export default function SendScreen({ navigation, route }: any) {
         expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       };
 
-      if (isEmail) {
+      if (selectedToken.symbol === 'USDC' && !recipientIsEmail) {
         paymentData.recipient_email = recipient.toLowerCase();
       } else {
         paymentData.recipient_wallet = recipient.toLowerCase();
@@ -169,7 +183,7 @@ export default function SendScreen({ navigation, route }: any) {
 
       Alert.alert(
         'Payment Created!',
-        `Your payment of $${amount} ${selectedToken.symbol} has been created. ${isEmail ? `An email has been sent to ${recipient}` : 'Share the claim link with the recipient.'}`,
+        `Your payment of $${amount} ${selectedToken.symbol} has been created. ${recipientIsEmail ? `An email has been sent to ${recipient}` : 'Share the claim link with the recipient.'}`,
         [
           { text: 'View Receipt', onPress: () => navigation.navigate('Receipt', { transaction: data }) },
           { text: 'Done', style: 'cancel' },
