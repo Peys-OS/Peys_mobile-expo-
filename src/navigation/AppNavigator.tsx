@@ -18,6 +18,7 @@ import QRScannerScreen from '../screens/QRScannerScreen';
 import NetworkSettingsScreen from '../screens/NetworkSettingsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import HelpSupportScreen from '../screens/HelpSupportScreen';
+import AssetsScreen from '../screens/AssetsScreen';
 import PendingTransactionsScreen from '../screens/PendingTransactionsScreen';
 import BulkSendScreen from '../screens/BulkSendScreen';
 import InvoiceScreen from '../screens/InvoiceScreen';
@@ -113,6 +114,7 @@ export default function AppNavigator() {
         <Stack.Screen name="NetworkSettings" component={NetworkSettingsScreen} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />
+        <Stack.Screen name="Assets" component={AssetsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
