@@ -11,6 +11,7 @@ import {
 } from '../lib/escrow';
 import { colors, spacing, borderRadius } from '../theme/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { Validation } from '../lib/validation';
 
 interface Token {
   symbol: string;
@@ -103,28 +104,32 @@ export default function SendScreen({ navigation, route }: any) {
   };
 
   const handleSend = async () => {
-    if (!amount || parseFloat(amount) <= 0) {
-      Alert.alert('Error', 'Please enter a valid amount');
-      return;
-    }
-    if (!recipient) {
-      Alert.alert('Error', 'Please enter a recipient');
+    const amountValidation = Validation.validateAmount(amount);
+    if (!amountValidation.valid) {
+      Alert.alert('Error', amountValidation.error);
       return;
     }
 
-    const isEmail = recipient.includes('@');
-    const isValidAddress = /^0x[a-fA-F0-9]{40}$/.test(recipient);
-
-    if (!isEmail && !isValidAddress) {
-      Alert.alert('Error', 'Please enter a valid email or wallet address');
+    const recipientValidation = Validation.validateRecipient(recipient);
+    if (!recipientValidation.valid) {
+      Alert.alert('Error', recipientValidation.error);
       return;
     }
 
+    if (memo) {
+      const memoValidation = Validation.validateMemo(memo);
+      if (!memoValidation.valid) {
+        Alert.alert('Error', memoValidation.error);
+        return;
+      }
+    }
+
+    const isEmail = Validation.isValidEmail(recipient);
     setRecipientIsEmail(isEmail);
 
     Alert.alert(
       'Confirm Transaction',
-      `You are about to send ${amount} ${selectedToken.symbol} to ${recipient.slice(0, 8)}...\n\nNetwork: ${selectedNetwork.name}\n${memo ? `Memo: ${memo}` : ''}`,
+      `You are about to send ${amount} ${selectedToken.symbol} to ${Validation.truncateAddress(recipient)}\n\nNetwork: ${selectedNetwork.name}\n${memo ? `Memo: ${memo}` : ''}`,
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Confirm', onPress: () => executeSend() },
