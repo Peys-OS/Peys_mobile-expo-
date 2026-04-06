@@ -86,7 +86,7 @@ export default function SettingsScreen({ navigation }: any) {
 
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: theme.textTertiary }]}>Support</Text>
-        <MenuItem icon="help-circle-outline" title="Help Center" onPress={() => {}} />
+        <MenuItem icon="help-circle-outline" title="Help Center" onPress={() => navigation.navigate('HelpSupport')} />
         <MenuItem icon="document-text-outline" title="Terms of Service" onPress={() => {}} />
         <MenuItem icon="shield-outline" title="Privacy Policy" onPress={() => {}} />
       </View>
