@@ -36,14 +36,14 @@ const TOKENS: Token[] = [
   { symbol: 'USDC', name: 'USD Coin', decimals: 6 },
 ];
 
-export default function SendScreen({ navigation }: any) {
+export default function SendScreen({ navigation, route }: any) {
   const { walletAddress, authenticated } = usePrivyContext();
   const { isDarkMode, refreshTransactions } = useApp();
   
   const theme = isDarkMode ? colors.dark : colors.light;
   
   const [amount, setAmount] = useState('');
-  const [recipient, setRecipient] = useState('');
+  const [recipient, setRecipient] = useState(route.params?.recipient || '');
   const [selectedNetwork, setSelectedNetwork] = useState<Network>(NETWORKS[0]);
   const [selectedToken, setSelectedToken] = useState<Token>(TOKENS[0]);
   const [loading, setLoading] = useState(false);
@@ -246,7 +246,10 @@ export default function SendScreen({ navigation }: any) {
             autoCapitalize="none"
             autoCorrect={false}
           />
-          <TouchableOpacity style={[styles.scanBtn, { backgroundColor: theme.surface }]}>
+          <TouchableOpacity 
+            style={[styles.scanBtn, { backgroundColor: theme.surface }]}
+            onPress={() => navigation.navigate('QRScanner')}
+          >
             <Ionicons name="qr-code" size={20} color={theme.primary} />
           </TouchableOpacity>
         </View>
