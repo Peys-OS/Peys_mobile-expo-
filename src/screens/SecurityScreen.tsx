@@ -5,6 +5,7 @@ import { usePrivyContext } from '../contexts/PrivyContext';
 import { useApp } from '../contexts/AppContext';
 import { colors, spacing, borderRadius } from '../theme/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { SecureStorage } from '../lib/secureStorage';
 
 export default function SecurityScreen({ navigation }: any) {
   const { authenticated, walletAddress } = usePrivyContext();
@@ -19,7 +20,17 @@ export default function SecurityScreen({ navigation }: any) {
 
   useEffect(() => {
     checkBiometricAvailability();
+    loadSecuritySettings();
   }, []);
+
+  const loadSecuritySettings = async () => {
+    try {
+      const biometric = await SecureStorage.isBiometricEnabled();
+      setBiometricEnabled(biometric);
+    } catch (error) {
+      console.error('Error loading security settings:', error);
+    }
+  };
 
   const checkBiometricAvailability = async () => {
     try {
@@ -51,6 +62,7 @@ export default function SecurityScreen({ navigation }: any) {
         });
         if (result.success) {
           setBiometricEnabled(true);
+          await SecureStorage.setBiometricEnabled(true);
           Alert.alert('Success', 'Biometric authentication enabled');
         }
       } catch (error) {
@@ -58,6 +70,7 @@ export default function SecurityScreen({ navigation }: any) {
       }
     } else {
       setBiometricEnabled(false);
+      await SecureStorage.setBiometricEnabled(false);
     }
   };
 
