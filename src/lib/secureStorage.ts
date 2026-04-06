@@ -122,3 +122,44 @@ export const verifyPin = async (pin: string, storedHash: string): Promise<boolea
   const inputHash = await hashPin(pin);
   return inputHash === storedHash;
 };
+
+let clipboardModule: typeof import('expo-clipboard') | null = null;
+
+async function getClipboard() {
+  if (!clipboardModule) {
+    clipboardModule = await import('expo-clipboard');
+  }
+  return clipboardModule;
+}
+
+export const SecureClipboard = {
+  timeoutId: null as NodeJS.Timeout | null,
+  
+  async copySecure(text: string, autoClearMs: number = 30000): Promise<void> {
+    const Clipboard = await getClipboard();
+    await Clipboard.setStringAsync(text);
+    
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+    
+    if (autoClearMs > 0) {
+      this.timeoutId = setTimeout(async () => {
+        await this.clear();
+        this.timeoutId = null;
+      }, autoClearMs);
+    }
+  },
+  
+  async clear(): Promise<void> {
+    const Clipboard = await getClipboard();
+    await Clipboard.setStringAsync('');
+  },
+  
+  cancelAutoClear(): void {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
+  },
+};

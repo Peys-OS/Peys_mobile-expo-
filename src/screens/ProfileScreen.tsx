@@ -5,6 +5,7 @@ import { usePrivyContext } from '../contexts/PrivyContext';
 import { useApp } from '../contexts/AppContext';
 import { colors, spacing, borderRadius } from '../theme/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { SecureClipboard } from '../lib/secureStorage';
 
 export default function ProfileScreen({ navigation }: any) {
   const { user, walletAddress, authenticated, logout } = usePrivyContext();
@@ -14,8 +15,8 @@ export default function ProfileScreen({ navigation }: any) {
 
   const handleCopyAddress = async () => {
     if (walletAddress) {
-      await Clipboard.setStringAsync(walletAddress);
-      Alert.alert('Copied', 'Wallet address copied to clipboard');
+      await SecureClipboard.copySecure(walletAddress, 30000);
+      Alert.alert('Copied', 'Wallet address copied (auto-clears in 30s)');
     }
   };
 

@@ -7,6 +7,7 @@ import { useApp } from '../contexts/AppContext';
 import { supabase } from '../lib/supabase';
 import { colors, spacing, borderRadius } from '../theme/theme';
 import { Ionicons } from '@expo/vector-icons';
+import { SecureClipboard } from '../lib/secureStorage';
 
 export default function HistoryScreen({ navigation }: any) {
   const { walletAddress, authenticated } = usePrivyContext();
@@ -84,8 +85,8 @@ export default function HistoryScreen({ navigation }: any) {
   };
 
   const copyToClipboard = async (text: string, label: string) => {
-    await Clipboard.setStringAsync(text);
-    Alert.alert('Copied', `${label} copied to clipboard`);
+    await SecureClipboard.copySecure(text, 30000);
+    Alert.alert('Copied', `${label} copied (auto-clears in 30s)`);
   };
 
   const renderRightActions = (item: any) => {
