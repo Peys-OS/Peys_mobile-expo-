@@ -2,13 +2,45 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
+import * as Notifications from 'expo-notifications';
 import { PrivyProvider as PrivyProviderCore } from '@privy-io/expo';
 import { PrivyProvider } from './src/contexts/PrivyContext';
 import { AppProvider, useApp } from './src/contexts/AppContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import SplashScreen from './src/components/SplashScreen';
+import { requestNotificationPermissions } from './src/lib/notifications';
 
 const PRIVY_APP_ID = process.env.EXPO_PUBLIC_PRIVY_APP_ID || 'cmlpmbwgn00cb0dicbfwdkz40';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
+
+function NotificationHandler() {
+  useEffect(() => {
+    requestNotificationPermissions();
+    
+    const responseSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log('Notification response:', response);
+      const data = response.notification.request.content.data;
+      if (data?.type) {
+        console.log('Notification type:', data.type);
+      }
+    });
+
+    return () => {
+      responseSubscription.remove();
+    };
+  }, []);
+
+  return null;
+}
 
 function DeepLinkHandler() {
   const { refreshTransactions } = useApp();
@@ -68,6 +100,7 @@ export default function App() {
       <PrivyProviderCore appId={PRIVY_APP_ID}>
         <PrivyProvider>
           <AppProvider>
+            <NotificationHandler />
             <DeepLinkHandler />
             {showSplash ? <SplashScreen /> : <AppNavigator />}
           </AppProvider>
