@@ -78,7 +78,7 @@ export default function SettingsScreen({ navigation }: any) {
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: theme.textTertiary }]}>Preferences</Text>
         <MenuItem icon="language-outline" title="Language" subtitle="English" onPress={() => {}} />
-        <MenuItem icon="cash-outline" title="Currency" subtitle="USD" onPress={() => {}} />
+        <MenuItem icon="cash-outline" title="Currency" subtitle="USD" onPress={() => navigation.navigate('ExchangeRates')} />
         <MenuItem icon="notifications-outline" title="Notifications" onPress={() => navigation.navigate('Notifications')} />
       </View>
 

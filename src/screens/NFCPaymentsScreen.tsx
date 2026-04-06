@@ -103,7 +103,7 @@ export default function NFCPaymentsScreen({ navigation }: any) {
           isActive && styles.nfcCircleActive
         ]}>
           <Ionicons 
-            name="nfc" 
+            name="wifi" 
             size={64} 
             color={isActive ? theme.primary : theme.textTertiary} 
           />
