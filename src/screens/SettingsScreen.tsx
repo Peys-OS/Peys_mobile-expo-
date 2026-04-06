@@ -68,7 +68,7 @@ export default function SettingsScreen({ navigation }: any) {
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: theme.textTertiary }]}>Account</Text>
         <MenuItem icon="person-outline" title="Profile" onPress={() => navigation.navigate('Profile')} />
-        <MenuItem icon="people-outline" title="Contacts" onPress={() => {}} />
+        <MenuItem icon="people-outline" title="Contacts" onPress={() => navigation.navigate('Contacts')} />
         <MenuItem icon="shield-checkmark-outline" title="Security" subtitle="Biometrics, PIN" onPress={() => {}} />
       </View>
 

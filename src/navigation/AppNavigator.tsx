@@ -12,6 +12,7 @@ import HistoryScreen from '../screens/HistoryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EscrowScreen from '../screens/EscrowScreen';
+import ContactsScreen from '../screens/ContactsScreen';
 import PendingTransactionsScreen from '../screens/PendingTransactionsScreen';
 import BulkSendScreen from '../screens/BulkSendScreen';
 import InvoiceScreen from '../screens/InvoiceScreen';
@@ -101,6 +102,7 @@ export default function AppNavigator() {
         <Stack.Screen name="StreamingPayments" component={StreamingPaymentsScreen} />
         <Stack.Screen name="RecurringPayments" component={RecurringPaymentsScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Contacts" component={ContactsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
