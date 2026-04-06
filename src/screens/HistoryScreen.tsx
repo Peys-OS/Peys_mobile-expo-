@@ -147,6 +147,9 @@ export default function HistoryScreen({ navigation }: any) {
       <View style={[styles.container, { backgroundColor: theme.background }]}>
         <View style={[styles.header, { backgroundColor: theme.surface }]}>
           <Text style={[styles.headerTitle, { color: theme.text }]}>History</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('CalendarView')}>
+            <Ionicons name="calendar" size={24} color={theme.text} />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.filters}>
