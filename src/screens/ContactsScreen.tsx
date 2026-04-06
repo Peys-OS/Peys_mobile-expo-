@@ -11,6 +11,7 @@ interface Contact {
   name: string;
   address: string;
   type: 'wallet' | 'email' | 'phone';
+  isFavorite?: boolean;
 }
 
 export default function ContactsScreen({ navigation }: any) {
@@ -20,8 +21,8 @@ export default function ContactsScreen({ navigation }: any) {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [contacts, setContacts] = useState<Contact[]>([
-    { id: '1', name: 'John Doe', address: '0x742d35Cc6634C0532925a3b844Bc9e7595f8eB1E', type: 'wallet' },
-    { id: '2', name: 'Jane Smith', address: 'jane@example.com', type: 'email' },
+    { id: '1', name: 'John Doe', address: '0x742d35Cc6634C0532925a3b844Bc9e7595f8eB1E', type: 'wallet', isFavorite: true },
+    { id: '2', name: 'Jane Smith', address: 'jane@example.com', type: 'email', isFavorite: true },
     { id: '3', name: 'Bob Wilson', address: '+1234567890', type: 'phone' },
   ]);
 
@@ -33,6 +34,12 @@ export default function ContactsScreen({ navigation }: any) {
   const handleCopyAddress = async (address: string) => {
     await Clipboard.setStringAsync(address);
     Alert.alert('Copied', 'Address copied to clipboard');
+  };
+
+  const toggleFavorite = (id: string) => {
+    setContacts(contacts.map(c => 
+      c.id === id ? { ...c, isFavorite: !c.isFavorite } : c
+    ));
   };
 
   const handleSendToContact = (contact: Contact) => {
@@ -64,9 +71,13 @@ export default function ContactsScreen({ navigation }: any) {
       <View style={styles.contactActions}>
         <TouchableOpacity
           style={[styles.actionBtn, { backgroundColor: theme.background }]}
-          onPress={() => handleCopyAddress(item.address)}
+          onPress={() => toggleFavorite(item.id)}
         >
-          <Ionicons name="copy-outline" size={18} color={theme.primary} />
+          <Ionicons 
+            name={item.isFavorite ? 'star' : 'star-outline'} 
+            size={18} 
+            color={item.isFavorite ? '#FFD700' : theme.primary} 
+          />
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionBtn, { backgroundColor: theme.primary }]}
@@ -77,6 +88,9 @@ export default function ContactsScreen({ navigation }: any) {
       </View>
     </TouchableOpacity>
   );
+
+  const favoriteContacts = contacts.filter(c => c.isFavorite);
+  const otherContacts = contacts.filter(c => !c.isFavorite);
 
   if (!authenticated) {
     return (
@@ -119,6 +133,14 @@ export default function ContactsScreen({ navigation }: any) {
         keyExtractor={(item) => item.id}
         renderItem={renderContact}
         contentContainerStyle={styles.list}
+        ListHeaderComponent={
+          favoriteContacts.length > 0 && !searchQuery ? (
+            <View style={styles.sectionHeader}>
+              <Ionicons name="star" size={16} color="#FFD700" />
+              <Text style={[styles.sectionTitle, { color: theme.text }]}>Favorites</Text>
+            </View>
+          ) : null
+        }
         ListEmptyComponent={
           <View style={styles.emptyState}>
             <Ionicons name="people-outline" size={48} color={theme.textTertiary} />
@@ -153,4 +175,6 @@ const styles = StyleSheet.create({
   emptyText: { fontSize: 16, marginTop: spacing.md },
   emptySubtext: { fontSize: 14, marginTop: spacing.xs },
   title: { fontSize: 18, textAlign: 'center', marginTop: 100 },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs, marginBottom: spacing.sm, marginTop: spacing.md },
+  sectionTitle: { fontSize: 14, fontWeight: '600' },
 });
