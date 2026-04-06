@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert, ActivityIndicator, FlatList } from 'react-native';
 import { usePrivyContext } from '../contexts/PrivyContext';
 import { useApp } from '../contexts/AppContext';
 import { supabase } from '../lib/supabase';
@@ -51,12 +51,15 @@ export default function SendScreen({ navigation, route }: any) {
   const [showNetworkPicker, setShowNetworkPicker] = useState(false);
   const [showTokenPicker, setShowTokenPicker] = useState(false);
   const [tokenBalance, setTokenBalance] = useState<string>('0');
+  const [recentRecipients, setRecentRecipients] = useState<any[]>([]);
+  const [showRecentContacts, setShowRecentContacts] = useState(false);
 
   const presets = ['5', '10', '25', '50', '100', '250'];
 
   useEffect(() => {
     if (authenticated && walletAddress && selectedToken.symbol === 'USDC') {
       fetchTokenBalance();
+      fetchRecentRecipients();
     }
   }, [authenticated, walletAddress, selectedNetwork.id, selectedToken.symbol]);
 
@@ -67,6 +70,34 @@ export default function SendScreen({ navigation, route }: any) {
     } catch (error) {
       console.error('Error fetching balance:', error);
       setTokenBalance('0');
+    }
+  };
+
+  const fetchRecentRecipients = async () => {
+    if (!walletAddress) return;
+    try {
+      const { data, error } = await supabase
+        .from('payments')
+        .select('recipient_wallet, recipient_email')
+        .or(`sender_wallet.eq.${walletAddress}`)
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (!error && data) {
+        const recipients = new Map<string, any>();
+        data.forEach((item: any) => {
+          const key = item.recipient_wallet || item.recipient_email;
+          if (key && !recipients.has(key)) {
+            recipients.set(key, {
+              address: key,
+              label: item.recipient_email || key.slice(0, 6) + '...' + key.slice(-4),
+            });
+          }
+        });
+        setRecentRecipients(Array.from(recipients.values()).slice(0, 8));
+      }
+    } catch (error) {
+      console.error('Error fetching recent recipients:', error);
     }
   };
 
@@ -259,6 +290,42 @@ export default function SendScreen({ navigation, route }: any) {
           </TouchableOpacity>
         </View>
 
+        {recentRecipients.length > 0 && !recipient && (
+          <View style={styles.recentContacts}>
+            <TouchableOpacity 
+              style={styles.recentHeader}
+              onPress={() => setShowRecentContacts(!showRecentContacts)}
+            >
+              <Text style={[styles.recentTitle, { color: theme.textSecondary }]}>Recent</Text>
+              <Ionicons 
+                name={showRecentContacts ? 'chevron-up' : 'chevron-down'} 
+                size={16} 
+                color={theme.textSecondary} 
+              />
+            </TouchableOpacity>
+            {showRecentContacts && (
+              <FlatList
+                horizontal
+                data={recentRecipients}
+                keyExtractor={(item) => item.address}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={[styles.recentChip, { backgroundColor: theme.surface }]}
+                    onPress={() => {
+                      setRecipient(item.address);
+                      setShowRecentContacts(false);
+                    }}
+                  >
+                    <Text style={[styles.recentChipText, { color: theme.text }]}>{item.label}</Text>
+                  </TouchableOpacity>
+                )}
+                contentContainerStyle={styles.recentList}
+              />
+            )}
+          </View>
+        )}
+
         <Text style={[styles.label, { color: theme.text }]}>Network</Text>
         <TouchableOpacity 
           style={[styles.networkSelector, { backgroundColor: theme.surface }]}
@@ -359,4 +426,10 @@ const styles = StyleSheet.create({
   sendBtnText: { color: '#FFF', fontSize: 16, fontWeight: '600' },
   title: { fontSize: 18, textAlign: 'center', marginTop: 100 },
   bottomPadding: { height: 100 },
+  recentContacts: { marginTop: spacing.sm },
+  recentHeader: { flexDirection: 'row', alignItems: 'center', gap: spacing.xs },
+  recentTitle: { fontSize: 12, fontWeight: '600' },
+  recentList: { paddingVertical: spacing.sm, gap: spacing.sm },
+  recentChip: { paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: borderRadius.full, marginRight: spacing.sm },
+  recentChipText: { fontSize: 13 },
 });
