@@ -80,6 +80,7 @@ export default function SettingsScreen({ navigation }: any) {
         <MenuItem icon="language-outline" title="Language" subtitle="English" onPress={() => {}} />
         <MenuItem icon="cash-outline" title="Currency" subtitle="USD" onPress={() => navigation.navigate('ExchangeRates')} />
         <MenuItem icon="pricetag-outline" title="Categories" onPress={() => navigation.navigate('TransactionCategories')} />
+        <MenuItem icon="grid-outline" title="Customize Dashboard" onPress={() => navigation.navigate('CustomizeDashboard')} />
         <MenuItem icon="notifications-outline" title="Notifications" onPress={() => navigation.navigate('Notifications')} />
       </View>
 
