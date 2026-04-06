@@ -44,6 +44,7 @@ export default function SendScreen({ navigation, route }: any) {
   
   const [amount, setAmount] = useState('');
   const [recipient, setRecipient] = useState(route.params?.recipient || '');
+  const [memo, setMemo] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState<Network>(NETWORKS[0]);
   const [selectedToken, setSelectedToken] = useState<Token>(TOKENS[0]);
   const [loading, setLoading] = useState(false);
@@ -121,6 +122,10 @@ export default function SendScreen({ navigation, route }: any) {
         paymentData.recipient_email = recipient.toLowerCase();
       } else {
         paymentData.recipient_wallet = recipient.toLowerCase();
+      }
+
+      if (memo.trim()) {
+        paymentData.memo = memo.trim();
       }
 
       const { data, error } = await supabase
@@ -284,6 +289,17 @@ export default function SendScreen({ navigation, route }: any) {
             ))}
           </View>
         )}
+
+        <Text style={[styles.label, { color: theme.text }]}>Memo (Optional)</Text>
+        <TextInput
+          style={[styles.input, { backgroundColor: theme.surface, color: theme.text }]}
+          value={memo}
+          onChangeText={setMemo}
+          placeholder="Add a note..."
+          placeholderTextColor={theme.textTertiary}
+          maxLength={100}
+          multiline
+        />
 
         <View style={[styles.feeInfo, { backgroundColor: theme.surface }]}>
           <Ionicons name="information-circle-outline" size={16} color={theme.textSecondary} />
