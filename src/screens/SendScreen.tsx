@@ -171,7 +171,7 @@ export default function SendScreen({ navigation, route }: any) {
         'Payment Created!',
         `Your payment of $${amount} ${selectedToken.symbol} has been created. ${isEmail ? `An email has been sent to ${recipient}` : 'Share the claim link with the recipient.'}`,
         [
-          { text: 'View Escrow', onPress: () => navigation.navigate('Escrow') },
+          { text: 'View Receipt', onPress: () => navigation.navigate('Receipt', { transaction: data }) },
           { text: 'Done', style: 'cancel' },
         ]
       );
