@@ -1,8 +1,8 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
@@ -10,6 +10,7 @@ import SendScreen from '../screens/SendScreen';
 import ReceiveScreen from '../screens/ReceiveScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import EscrowScreen from '../screens/EscrowScreen';
 import PendingTransactionsScreen from '../screens/PendingTransactionsScreen';
 import BulkSendScreen from '../screens/BulkSendScreen';
@@ -17,26 +18,62 @@ import InvoiceScreen from '../screens/InvoiceScreen';
 import BillsScreen from '../screens/BillsScreen';
 import StreamingPaymentsScreen from '../screens/StreamingPaymentsScreen';
 import RecurringPaymentsScreen from '../screens/RecurringPaymentsScreen';
+import { useApp } from '../contexts/AppContext';
+import { colors } from '../theme/theme';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const lightNavTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: colors.light.primary,
+    background: colors.light.background,
+    card: colors.light.surface,
+    text: colors.light.text,
+    border: colors.light.border,
+  },
+};
+
+const darkNavTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: colors.dark.primary,
+    background: colors.dark.background,
+    card: colors.dark.surface,
+    text: colors.dark.text,
+    border: colors.dark.border,
+  },
+};
+
 function MainTabs() {
+  const { isDarkMode } = useApp();
+  const theme = isDarkMode ? colors.dark : colors.light;
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
-          const icons: Record<string, any> = {
+          const icons: Record<string, "home" | "home-outline" | "time" | "time-outline" | "settings" | "settings-outline"> = {
             Home: focused ? 'home' : 'home-outline',
             History: focused ? 'time' : 'time-outline',
             Settings: focused ? 'settings' : 'settings-outline',
           };
-          return <Ionicons name={icons[route.name] || 'ellipse'} size={size} color={color} />;
+          const iconName = icons[route.name] || 'home-outline';
+          return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#999',
-        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.textTertiary,
+        tabBarStyle: {
+          backgroundColor: theme.surface,
+          borderTopWidth: 1,
+          borderTopColor: theme.border,
+          paddingTop: 8,
+          height: 85,
+        },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -47,8 +84,11 @@ function MainTabs() {
 }
 
 export default function AppNavigator() {
+  const { isDarkMode } = useApp();
+  const navTheme = isDarkMode ? darkNavTheme : lightNavTheme;
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Main" component={MainTabs} />
         <Stack.Screen name="Send" component={SendScreen} />
@@ -60,17 +100,8 @@ export default function AppNavigator() {
         <Stack.Screen name="Bills" component={BillsScreen} />
         <Stack.Screen name="StreamingPayments" component={StreamingPaymentsScreen} />
         <Stack.Screen name="RecurringPayments" component={RecurringPaymentsScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: '#FFF',
-    borderTopWidth: 1,
-    borderTopColor: '#F0F0F0',
-    paddingTop: 8,
-    height: 85,
-  },
-});
