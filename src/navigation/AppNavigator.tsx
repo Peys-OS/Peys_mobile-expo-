@@ -38,6 +38,7 @@ import NFCPaymentsScreen from '../screens/NFCPaymentsScreen';
 import ExchangeRatesScreen from '../screens/ExchangeRatesScreen';
 import TransactionCategoriesScreen from '../screens/TransactionCategoriesScreen';
 import CustomizeDashboardScreen from '../screens/CustomizeDashboardScreen';
+import CurrencySettingsScreen from '../screens/CurrencySettingsScreen';
 import { useApp } from '../contexts/AppContext';
 import { colors } from '../theme/theme';
 
@@ -141,6 +142,7 @@ export default function AppNavigator() {
         <Stack.Screen name="ExchangeRates" component={ExchangeRatesScreen} />
         <Stack.Screen name="TransactionCategories" component={TransactionCategoriesScreen} />
         <Stack.Screen name="CustomizeDashboard" component={CustomizeDashboardScreen} />
+        <Stack.Screen name="CurrencySettings" component={CurrencySettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
