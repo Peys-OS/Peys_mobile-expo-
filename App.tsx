@@ -10,6 +10,7 @@ import AppNavigator from './src/navigation/AppNavigator';
 import SplashScreen from './src/components/SplashScreen';
 import { requestNotificationPermissions } from './src/lib/notifications';
 import { SessionManager, ActivityTracker } from './src/lib/sessionManager';
+import { SecurityProvider } from './src/contexts/SecurityContext';
 
 const PRIVY_APP_ID = process.env.EXPO_PUBLIC_PRIVY_APP_ID || 'cmlpmbwgn00cb0dicbfwdkz40';
 
@@ -100,11 +101,13 @@ export default function App() {
       <StatusBar style="dark" />
       <PrivyProviderCore appId={PRIVY_APP_ID}>
         <PrivyProvider>
-          <AppProvider>
-            <NotificationHandler />
-            <DeepLinkHandler />
-            {showSplash ? <SplashScreen /> : <AppNavigator />}
-          </AppProvider>
+          <SecurityProvider>
+            <AppProvider>
+              <NotificationHandler />
+              <DeepLinkHandler />
+              {showSplash ? <SplashScreen /> : <AppNavigator />}
+            </AppProvider>
+          </SecurityProvider>
         </PrivyProvider>
       </PrivyProviderCore>
     </SafeAreaProvider>
