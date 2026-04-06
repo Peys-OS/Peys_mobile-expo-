@@ -19,6 +19,7 @@ import NetworkSettingsScreen from '../screens/NetworkSettingsScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import HelpSupportScreen from '../screens/HelpSupportScreen';
 import AssetsScreen from '../screens/AssetsScreen';
+import SwapScreen from '../screens/SwapScreen';
 import PendingTransactionsScreen from '../screens/PendingTransactionsScreen';
 import BulkSendScreen from '../screens/BulkSendScreen';
 import InvoiceScreen from '../screens/InvoiceScreen';
@@ -115,6 +116,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />
         <Stack.Screen name="Assets" component={AssetsScreen} />
+        <Stack.Screen name="Swap" component={SwapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

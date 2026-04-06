@@ -32,9 +32,10 @@ export default function HomeScreen({ navigation }: any) {
   const quickActions = [
     { icon: 'send' as const, label: 'Send', screen: 'Send', color: theme.primary },
     { icon: 'arrow-down' as const, label: 'Receive', screen: 'Receive', color: theme.primary },
+    { icon: 'swap-horizontal' as const, label: 'Swap', screen: 'Swap', color: '#5856D6' },
     { icon: 'document-text' as const, label: 'Escrow', screen: 'Escrow', color: '#35D07F' },
     { icon: 'layers' as const, label: 'Bulk', screen: 'BulkSend', color: '#FF9500' },
-    { icon: 'wallet' as const, label: 'Assets', screen: 'Assets', color: '#5856D6' },
+    { icon: 'wallet' as const, label: 'Assets', screen: 'Assets', color: '#007AFF' },
   ];
 
   return (
