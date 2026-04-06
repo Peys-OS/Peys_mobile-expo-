@@ -71,6 +71,7 @@ export default function SettingsScreen({ navigation }: any) {
         <MenuItem icon="people-outline" title="Contacts" onPress={() => navigation.navigate('Contacts')} />
         <MenuItem icon="bookmark-outline" title="Saved Addresses" onPress={() => navigation.navigate('AddressLabels')} />
         <MenuItem icon="document-text-outline" title="Payment Templates" onPress={() => navigation.navigate('PaymentTemplates')} />
+        <MenuItem icon="trending-down" title="Budget & Reminders" onPress={() => navigation.navigate('BudgetReminder')} />
         <MenuItem icon="shield-checkmark-outline" title="Security" subtitle="Biometrics, PIN" onPress={() => navigation.navigate('Security')} />
       </View>
 
