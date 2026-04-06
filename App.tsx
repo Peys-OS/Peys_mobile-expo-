@@ -9,6 +9,7 @@ import { AppProvider, useApp } from './src/contexts/AppContext';
 import AppNavigator from './src/navigation/AppNavigator';
 import SplashScreen from './src/components/SplashScreen';
 import { requestNotificationPermissions } from './src/lib/notifications';
+import { SessionManager, ActivityTracker } from './src/lib/sessionManager';
 
 const PRIVY_APP_ID = process.env.EXPO_PUBLIC_PRIVY_APP_ID || 'cmlpmbwgn00cb0dicbfwdkz40';
 

@@ -50,7 +50,7 @@ export default function BillsScreen({ navigation }: any) {
           <View style={[styles.providerIcon, { backgroundColor: selectedCategory.color + '20' }]}>
             <Ionicons name={selectedCategory.icon as any} size={32} color={selectedCategory.color} />
           </View>
-          <Text style={styles.providerName}>{selectedProvider.name}</Text>
+          <Text style={styles.providerNameLarge}>{selectedProvider.name}</Text>
           <Text style={styles.providerCategory}>{selectedCategory.name}</Text>
         </View>
         {['electricity', 'water'].includes(selectedCategory.id) && (
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   providerMin: { fontSize: 12, color: '#666', marginTop: 2 },
   payCard: { backgroundColor: '#FFF', borderRadius: 16, padding: 24, alignItems: 'center', margin: 20 },
   providerIcon: { width: 64, height: 64, borderRadius: 32, justifyContent: 'center', alignItems: 'center', marginBottom: 12 },
-  providerName: { fontSize: 18, fontWeight: '700', color: '#000' },
+  providerNameLarge: { fontSize: 18, fontWeight: '700', color: '#000' },
   providerCategory: { fontSize: 14, color: '#666', marginTop: 2 },
   inputGroup: { marginBottom: 16, paddingHorizontal: 20 },
   inputLabel: { fontSize: 12, color: '#666', marginBottom: 6 },
