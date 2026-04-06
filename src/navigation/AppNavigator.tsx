@@ -15,6 +15,7 @@ import EscrowScreen from '../screens/EscrowScreen';
 import ContactsScreen from '../screens/ContactsScreen';
 import SecurityScreen from '../screens/SecurityScreen';
 import QRScannerScreen from '../screens/QRScannerScreen';
+import NetworkSettingsScreen from '../screens/NetworkSettingsScreen';
 import PendingTransactionsScreen from '../screens/PendingTransactionsScreen';
 import BulkSendScreen from '../screens/BulkSendScreen';
 import InvoiceScreen from '../screens/InvoiceScreen';
@@ -107,6 +108,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Contacts" component={ContactsScreen} />
         <Stack.Screen name="Security" component={SecurityScreen} />
         <Stack.Screen name="QRScanner" component={QRScannerScreen} />
+        <Stack.Screen name="NetworkSettings" component={NetworkSettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

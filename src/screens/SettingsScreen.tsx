@@ -81,7 +81,7 @@ export default function SettingsScreen({ navigation }: any) {
 
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { color: theme.textTertiary }]}>Networks</Text>
-        <MenuItem icon="wifi-outline" title="Networks" subtitle="Base, Celo, Polygon" onPress={() => {}} />
+        <MenuItem icon="wifi-outline" title="Networks" subtitle="Base, Celo, Polygon" onPress={() => navigation.navigate('NetworkSettings')} />
       </View>
 
       <View style={styles.section}>
