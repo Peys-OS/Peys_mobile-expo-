@@ -29,6 +29,7 @@ import BillsScreen from '../screens/BillsScreen';
 import StreamingPaymentsScreen from '../screens/StreamingPaymentsScreen';
 import RecurringPaymentsScreen from '../screens/RecurringPaymentsScreen';
 import SplitBillScreen from '../screens/SplitBillScreen';
+import AddressLabelsScreen from '../screens/AddressLabelsScreen';
 import { useApp } from '../contexts/AppContext';
 import { colors } from '../theme/theme';
 
@@ -123,6 +124,7 @@ export default function AppNavigator() {
         <Stack.Screen name="Swap" component={SwapScreen} />
         <Stack.Screen name="BuyCrypto" component={BuyCryptoScreen} />
         <Stack.Screen name="Receipt" component={ReceiptScreen} />
+        <Stack.Screen name="AddressLabels" component={AddressLabelsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
