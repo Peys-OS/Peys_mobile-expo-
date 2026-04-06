@@ -20,6 +20,7 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import HelpSupportScreen from '../screens/HelpSupportScreen';
 import AssetsScreen from '../screens/AssetsScreen';
 import SwapScreen from '../screens/SwapScreen';
+import BuyCryptoScreen from '../screens/BuyCryptoScreen';
 import PendingTransactionsScreen from '../screens/PendingTransactionsScreen';
 import BulkSendScreen from '../screens/BulkSendScreen';
 import InvoiceScreen from '../screens/InvoiceScreen';
@@ -117,6 +118,7 @@ export default function AppNavigator() {
         <Stack.Screen name="HelpSupport" component={HelpSupportScreen} />
         <Stack.Screen name="Assets" component={AssetsScreen} />
         <Stack.Screen name="Swap" component={SwapScreen} />
+        <Stack.Screen name="BuyCrypto" component={BuyCryptoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

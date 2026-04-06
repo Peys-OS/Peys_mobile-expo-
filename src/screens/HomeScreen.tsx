@@ -36,6 +36,7 @@ export default function HomeScreen({ navigation }: any) {
     { icon: 'document-text' as const, label: 'Escrow', screen: 'Escrow', color: '#35D07F' },
     { icon: 'layers' as const, label: 'Bulk', screen: 'BulkSend', color: '#FF9500' },
     { icon: 'wallet' as const, label: 'Assets', screen: 'Assets', color: '#007AFF' },
+    { icon: 'cart' as const, label: 'Buy', screen: 'BuyCrypto', color: '#FF2D55' },
   ];
 
   return (
