@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, RefreshControl, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, SectionList, RefreshControl, TouchableOpacity, Alert } from 'react-native';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
 import { usePrivyContext } from '../contexts/PrivyContext';
@@ -52,6 +52,35 @@ export default function HistoryScreen({ navigation }: any) {
     setRefreshing(true);
     await fetchTransactions();
     setRefreshing(false);
+  };
+
+  const groupTransactionsByDate = (txs: any[]) => {
+    const groups: { title: string; data: any[] }[] = [];
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    const formatDateHeader = (date: Date) => {
+      if (date.toDateString() === today.toDateString()) return 'Today';
+      if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
+      return date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+    };
+
+    const grouped = txs.reduce((acc: Record<string, any[]>, tx) => {
+      const date = new Date(tx.created_at).toDateString();
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(tx);
+      return acc;
+    }, {});
+
+    Object.keys(grouped).forEach(date => {
+      groups.push({
+        title: formatDateHeader(new Date(date)),
+        data: grouped[date],
+      });
+    });
+
+    return groups;
   };
 
   const copyToClipboard = async (text: string, label: string) => {
@@ -173,10 +202,13 @@ export default function HistoryScreen({ navigation }: any) {
           ))}
         </View>
 
-        <FlatList
-          data={transactions}
+        <SectionList
+          sections={groupTransactionsByDate(transactions)}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
+          renderSectionHeader={({ section }) => (
+            <Text style={[styles.sectionHeader, { color: theme.textSecondary }]}>{section.title}</Text>
+          )}
           ListEmptyComponent={
             <View style={styles.emptyState}>
               <Ionicons name="document-text-outline" size={48} color={theme.textTertiary} />
@@ -199,6 +231,7 @@ const styles = StyleSheet.create({
   filterChip: { paddingHorizontal: spacing.md, paddingVertical: spacing.xs, borderRadius: borderRadius.full },
   filterText: { fontSize: 14, fontWeight: '600' },
   list: { paddingHorizontal: spacing.lg, paddingBottom: 100 },
+  sectionHeader: { fontSize: 13, fontWeight: '600', marginTop: spacing.md, marginBottom: spacing.xs },
   txItem: { flexDirection: 'row', alignItems: 'center', padding: spacing.md, borderRadius: borderRadius.md, marginBottom: spacing.sm },
   txIcon: { width: 40, height: 40, borderRadius: 20, justifyContent: 'center', alignItems: 'center', marginRight: spacing.md },
   txInfo: { flex: 1 },
