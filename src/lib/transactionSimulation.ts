@@ -68,4 +68,4 @@ export const simulateTransaction = (type: 'send' | 'receive', to: string, amount
   TransactionSimulation.simulate(type, to, amount, token);
 
 export const runSimulation = (txs: SimulatedTransaction[]) =>
-  Promise.all(txs.map(tx => TransactionSimulation.execute(tx));
+  Promise.all(txs.map(tx => TransactionSimulation.execute(tx)));
